@@ -3,7 +3,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sh 'ls -la && ls -la client'
+                sh 'ls -la client'
+            }
+        }
+        stage('Docker check') {
+            steps {
+                sh 'docker --version && docker ps'
             }
         }
     }
