@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Example App</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Client estático + API Node + Postgres</h1>
+
+      <section class="card">
+        <h2>Health (sem DB)</h2>
+        <button id="btnHealth">Chamar /api/health</button>
+        <pre id="outHealth">—</pre>
+      </section>
+
+      <section class="card">
+        <h2>DB Time (com DB)</h2>
+        <button id="btnDbTime">Chamar /api/db-time</button>
+        <pre id="outDbTime">—</pre>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

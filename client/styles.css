@@ -1,0 +1,8 @@
+* { box-sizing: border-box; }
+body { font-family: system-ui, Arial, sans-serif; margin: 0; padding: 0; background: #f6f7fb; }
+.container { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+h1 { margin-bottom: 20px; }
+.card { background: white; border-radius: 12px; padding: 16px; margin: 12px 0; box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+button { padding: 10px 14px; border: 0; border-radius: 10px; cursor: pointer; background: #2b59ff; color: white; }
+button:hover { opacity: 0.92; }
+pre { background: #0b1020; color: #e9eefc; padding: 12px; border-radius: 10px; overflow-x: auto; }
