@@ -1,14 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                sh 'ls -la client'
-            }
-        }
-        stage('Docker check') {
-            steps {
-                sh 'docker --version && docker ps'
+                sh 'docker build -t jenkins-demo:$BUILD_NUMBER ./client'
             }
         }
     }
