@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'docker build -t jenkins-demo:$BUILD_NUMBER ./client'
+                sh 'docker build -t jenkins-demo-server:$BUILD_NUMBER ./server'
             }
         }
         stage('Push') {
@@ -21,6 +22,8 @@ pipeline {
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                         docker tag jenkins-demo:$BUILD_NUMBER $DOCKER_USER/jenkins-demo:$BUILD_NUMBER
                         docker push $DOCKER_USER/jenkins-demo:$BUILD_NUMBER
+                        docker tag jenkins-demo-server:$BUILD_NUMBER $DOCKER_USER/jenkins-demo-server:$BUILD_NUMBER
+                        docker push $DOCKER_USER/jenkins-demo-server:$BUILD_NUMBER
                     '''
                 }
             }
@@ -28,7 +31,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh """
-                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 'docker pull p3droribeiro21/jenkins-demo:${BUILD_NUMBER} && docker rm -f web || true && docker run -d --name web -p 80:80 p3droribeiro21/jenkins-demo:${BUILD_NUMBER}'
+                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 'docker network create appnet || true && docker pull p3droribeiro21/jenkins-demo:${BUILD_NUMBER} && docker pull p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker rm -f web api || true && docker run -d --name api --network appnet -p 3000:3000 p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker run -d --name web --network appnet -p 80:80 p3droribeiro21/jenkins-demo:${BUILD_NUMBER}'
                 """
             }
         }
