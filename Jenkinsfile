@@ -28,10 +28,19 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Deploy dev') {
+            when { branch 'dev' }
             steps {
                 sh """
-                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 'docker network create appnet || true && docker pull p3droribeiro21/jenkins-demo:${BUILD_NUMBER} && docker pull p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker rm -f web api || true && docker run -d --name api --network appnet -p 3000:3000 p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker run -d --name web --network appnet -p 80:80 p3droribeiro21/jenkins-demo:${BUILD_NUMBER}'
+                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 'docker network create appnet || true && docker pull p3droribeiro21/jenkins-demo:${BUILD_NUMBER} && docker pull p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker rm -f web-dev api-dev || true && docker run -d --name api-dev --network appnet p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker run -d --name web-dev --network appnet -p 8080:80 p3droribeiro21/jenkins-demo:${BUILD_NUMBER}'
+                """
+            }
+        }
+        stage('Deploy prod') {
+            when { branch 'main' }
+            steps {
+                sh """
+                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 'docker network create appnet || true && docker pull p3droribeiro21/jenkins-demo:${BUILD_NUMBER} && docker pull p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker rm -f web api || true && docker run -d --name api --network appnet p3droribeiro21/jenkins-demo-server:${BUILD_NUMBER} && docker run -d --name web --network appnet -p 80:80 p3droribeiro21/jenkins-demo:${BUILD_NUMBER}'
                 """
             }
         }
