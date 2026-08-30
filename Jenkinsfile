@@ -18,5 +18,12 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                sh '''
+                    ssh -o StrictHostKeyChecking=accept-new root@172.236.9.181 "docker pull p3droribeiro21/jenkins-demo:$BUILD_NUMBER && docker rm -f web || true && docker run -d --name web -p 80:80 p3droribeiro21/jenkins-demo:$BUILD_NUMBER"
+                '''
+            }
+        }
     }
 }
