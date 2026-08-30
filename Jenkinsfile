@@ -25,5 +25,11 @@ pipeline {
                 '''
             }
         }
-    }
+        stage('Test') {
+            steps {
+                dir('client') {
+                    sh 'npm ci && npm test'
+                }
+            }
+        }
 }
